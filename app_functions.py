@@ -21,6 +21,7 @@ import sys
 #import bc.bancocentral as bancocentral
 from datetime import datetime
 
+ANO_BALANCO = 2021
 
 class appFunctions(MainWindow):
 
@@ -92,7 +93,7 @@ class appFunctions(MainWindow):
         pBar_signal.emit(contador, len(empresas))
 
         for empresa in empresas:
-            #print(empresa)
+            print(empresa)
             URL = URLbase2 + empresa
             req = requests.get(URL, headers=header)
         
@@ -122,7 +123,7 @@ class appFunctions(MainWindow):
                 df4 = (pd.read_html(tabela4,decimal=',', thousands='.'))[0]   #Receita / EBIT
         
                 codigo = df0[1][0]
-                att = appFunctions.find_att(df0)
+                att = appFunctions.find_att(df1)
                 valor_mercado = appFunctions.find_valorMercado(df1)
                 ROE = appFunctions.find_ROE(df2)
                 LC = appFunctions.find_LC(df2)
@@ -246,10 +247,10 @@ class appFunctions(MainWindow):
         return tabelas
 
     def find_att(dataframe):
-        att = dataframe[3][1]
+        att = dataframe[3][0]
         att = int(att[len(att)-4::])
         
-        att = att - 2021
+        att = att - ANO_BALANCO
 
         return att
     
