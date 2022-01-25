@@ -250,7 +250,14 @@ class appFunctions(MainWindow):
         att = dataframe[3][0]
         att = int(att[len(att)-4::])
         
-        att = att - ANO_BALANCO
+        year = int(datetime.now().year)
+
+        if(att - year == 0 or att - (year-1) == 0):
+            return 0
+
+        else:
+            return 1
+
 
         return att
     
