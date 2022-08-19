@@ -13,6 +13,8 @@ from threading import Thread
 
 from bs4 import BeautifulSoup
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 import pandas as pd
 import lxml
 import os
@@ -20,8 +22,10 @@ import sys
 
 #import bc.bancocentral as bancocentral
 from datetime import datetime
+from datetime import date
 
-ANO_BALANCO = 2021
+
+ANO_BALANCO = date.today().year
 
 class appFunctions(MainWindow):
 
@@ -95,7 +99,19 @@ class appFunctions(MainWindow):
         for empresa in empresas:
             print(empresa)
             URL = URLbase2 + empresa
-            req = requests.get(URL, headers=header)
+            
+                        
+            retry_strategy = Retry(
+                total=3,
+                status_forcelist=[429, 500, 502, 503, 504],
+                method_whitelist=["HEAD", "GET", "OPTIONS"]
+            )
+
+            adapter = HTTPAdapter(max_retries=retry_strategy)
+            http = requests.Session()
+            http.mount("http://", adapter)
+            
+            req = http.get(URL, headers=header)
         
             contador += 1
             
