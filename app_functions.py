@@ -201,8 +201,13 @@ class appFunctions(MainWindow):
         teste['RANKING'] = soma
         teste = teste.sort_values(by='RANKING')
 
+        df_header = pd.DataFrame([{'Codigo':0, 'Valor':str(lim_inf_val)+' < '+str(lim_sup_val), 'ROE':'> '+str(lim_ROE), 'EBITDA':0, 'DivLiq/PatLiq':'< '+ str(lim_SOLFIN), 'DivLiq/EBITDA':'< '+str(lim_DIV_EBITDA),'LC':'> '+str(lim_LC),'Setor':0,'EY':0,'P/L':0,'P/VP':0,'EV/EBITDA':0,'EV/RecLiq':0, 'DivYield':0, 'ROE INDEX':0, 'P/L INDEX':0, 'RANKING':0}],index=['CONDICOES FILTRO'])
+        #df2 = pd.DataFrame([{'Codigo':0, 'Valor':str(lim_inf_val)+' < '+str(lim_sup_val), 'ROE':0, 'EBITDA':0, 'DivLiq/PatLiq':0, 'DivLiq/EBITDA':0,'LC':0,'Setor':0,'EY':0,'P/L':0,'P/VP':0,'EV/EBITDA':0,'EV/RecLiq':0, 'DivYield':0}],index=[0])
+        
+        final = pd.concat([df_header, teste])
+        
         with pd.ExcelWriter(nome_arquivo) as writer:
-            teste.to_excel(writer, sheet_name="Selecao")
+            final.to_excel(writer, sheet_name="Selecao")
 
         # with pd.ExcelWriter(nome_arquivo) as writer:
         #     for tabela in tabelas:
